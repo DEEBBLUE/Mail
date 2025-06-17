@@ -1,10 +1,9 @@
 "use client";
 import { FC, useState } from "react";
 
-type Auth = "reg" | "login";
-
 const Auth: FC = () => {
-  const [authState, setAuthState] = useState<Auth>("login");
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+
   return (
     <main>
       <section className="w-full h-screen flex justify-center items-center">
@@ -28,16 +27,14 @@ const Auth: FC = () => {
               className="bg-black w-[325px] h-[60px] mt-[10px] text-white"
               type="submit"
             >
-              {authState === "login" ? "LogIn" : "Registration"}
+              { isLogin ? "LogIn" : "Registration" }
             </button>
           </form>
           <button
             className=" text-[12px] mt-[10px]"
-            onClick={() => {
-              authState === "login" ? setAuthState("reg") : setAuthState("login")
-            }}
+            onClick={() => {setIsLogin(!isLogin)}}
           >
-            {authState === "login" ? "Registration" : "LogIn"}
+            { isLogin ? "Registration" : "LogIn" }
           </button>
         </div>
       </section>
