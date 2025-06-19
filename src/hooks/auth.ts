@@ -17,3 +17,5 @@ export function useLogin(login: string,password: string):Promise<AxiosResponse<I
   }) 
 }
 
+export type AuthFunc = (login: string,password: string) => Promise<AxiosResponse<IAuthResponse>> 
+
