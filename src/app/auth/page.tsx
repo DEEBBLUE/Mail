@@ -1,4 +1,5 @@
 "use client";
+import { AuthFunc, useLogin, useReg } from "@/hooks/auth";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -9,11 +10,25 @@ interface IForm{
 
 const Auth: FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [errMsg,setErrMsg] = useState("")
   const { register,handleSubmit,formState: { errors } } = useForm<IForm>()
 
+  const AuthFunc = (login: string,password: string,func: AuthFunc) => {
+    func(login,password)
+      .then((res) => {
+        localStorage.setItem("accessToken",res.data.accessToken)
+      })
+      .catch((err) => {
+        setErrMsg(err)
+      })
+  }
+
   const onSubmit: SubmitHandler<IForm> = (data) => {
-    console.log(data.login);
-    console.log(data.password);
+    if(isLogin){
+      AuthFunc(data.login, data.password,useLogin)  
+    }else{
+      AuthFunc(data.login, data.password,useReg)  
+    }
   }
 
   return (
@@ -26,7 +41,7 @@ const Auth: FC = () => {
               <input
                 className="w-[325px] h-[60px] border-[2px] border-black"
                 type="text"
-                { ...register("login",{required: true}) }
+                { ...register("login",{required: 'Login is required'}) }
               />
             </label>
             <label className=" flex flex-col mt-[5px]">
